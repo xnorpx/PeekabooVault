@@ -1,0 +1,95 @@
+[package]
+name = "schema"
+version.workspace = true
+authors = ["Chris Bruce <chris@lumeo.com>"]
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+transport.workspace = true
+xml-rs.workspace = true
+xsd-types.workspace = true
+
+# xsd
+common.workspace = true
+metadatastream = { workspace = true, optional = true }
+onvif.workspace = true
+radiometry = { workspace = true, optional = true }
+rules = { workspace = true, optional = true }
+soap_envelope.workspace = true
+types.workspace = true
+xmlmime.workspace = true
+xop.workspace = true
+
+# wsdl
+accesscontrol = { workspace = true, optional = true }
+accessrules = { workspace = true, optional = true }
+actionengine = { workspace = true, optional = true }
+advancedsecurity = { workspace = true, optional = true }
+analytics = { workspace = true, optional = true }
+authenticationbehavior = { workspace = true, optional = true }
+b_2.workspace = true
+bf_2 = { workspace = true, optional = true }
+credential = { workspace = true, optional = true }
+deviceio = { workspace = true, optional = true }
+devicemgmt = { workspace = true, optional = true }
+display = { workspace = true, optional = true }
+doorcontrol = { workspace = true, optional = true }
+event = { workspace = true, optional = true }
+imaging = { workspace = true, optional = true }
+media = { workspace = true, optional = true }
+media2 = { workspace = true, optional = true }
+provisioning = { workspace = true, optional = true }
+ptz = { workspace = true, optional = true }
+receiver = { workspace = true, optional = true }
+recording = { workspace = true, optional = true }
+replay = { workspace = true, optional = true }
+schedule = { workspace = true, optional = true }
+search = { workspace = true, optional = true }
+t_1.workspace = true
+thermal = { workspace = true, optional = true }
+uplink = { workspace = true, optional = true }
+ws_addr.workspace = true
+ws_discovery.workspace = true
+xml_xsd.workspace = true
+
+[dev-dependencies]
+assert_approx_eq.workspace = true
+async-trait.workspace = true
+tokio = { workspace = true, features = ["full"] }
+yaserde.workspace = true
+yaserde_derive.workspace = true
+
+[features]
+default = []
+accesscontrol = ["dep:accesscontrol"]
+accessrules = ["dep:accessrules"]
+actionengine = ["dep:actionengine"]
+advancedsecurity = ["dep:advancedsecurity"]
+analytics = ["dep:analytics"]
+authenticationbehavior = ["dep:authenticationbehavior"]
+bf_2 = ["dep:bf_2"]
+credential = ["dep:credential"]
+deviceio = ["dep:deviceio", "devicemgmt"]
+devicemgmt = ["dep:devicemgmt"]
+display = ["dep:display"]
+doorcontrol = ["dep:doorcontrol"]
+event = ["dep:event"]
+imaging = ["dep:imaging"]
+media = ["dep:media"]
+media2 = ["dep:media2"]
+metadatastream = ["dep:metadatastream"]
+provisioning = ["dep:provisioning"]
+ptz = ["dep:ptz"]
+radiometry = ["dep:radiometry"]
+receiver = ["dep:receiver"]
+recording = ["dep:recording"]
+replay = ["dep:replay"]
+rules = ["dep:rules"]
+schedule = ["dep:schedule"]
+search = ["dep:search"]
+thermal = ["dep:thermal"]
+uplink = ["dep:uplink"]
+
+[lints]
+workspace = true

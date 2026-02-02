@@ -1,0 +1,15 @@
+[package]
+name = "b_2"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+t_1.workspace = true
+validate.workspace = true
+ws_addr.workspace = true
+xml-rs.workspace = true
+xsd-macro-utils.workspace = true
+xsd-types.workspace = true
+yaserde.workspace = true
+yaserde_derive.workspace = true

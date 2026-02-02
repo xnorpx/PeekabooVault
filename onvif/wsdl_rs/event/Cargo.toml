@@ -1,0 +1,17 @@
+[package]
+name = "event"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+b_2.workspace = true
+t_1.workspace = true
+transport.workspace = true
+validate.workspace = true
+xml-rs.workspace = true
+xsd-macro-utils.workspace = true
+xsd-types.workspace = true
+yaserde.workspace = true
+yaserde_derive.workspace = true
+ws_addr.workspace = true

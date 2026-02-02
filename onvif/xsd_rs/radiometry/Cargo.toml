@@ -1,0 +1,19 @@
+[package]
+name = "radiometry"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+b_2.workspace = true
+common.workspace = true
+onvif.workspace = true
+soap_envelope.workspace = true
+validate.workspace = true
+xml-rs.workspace = true
+xmlmime.workspace = true
+xop.workspace = true
+xsd-macro-utils.workspace = true
+xsd-types.workspace = true
+yaserde.workspace = true
+yaserde_derive.workspace = true

@@ -1,0 +1,48 @@
+[package]
+name = "peeka_boo_vault"
+version = "0.1.0"
+edition = "2024"
+description = "PeekabooVault NVR - Camera discovery and recording"
+authors = ["PeekabooVault Team"]
+license = "MIT"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7", features = ["codec"] }
+tokio-stream = "0.1"
+
+# Web framework
+axum = { version = "0.8", features = ["json", "tokio"] }
+tower = { version = "0.5", features = ["util"] }
+tower-http = { version = "0.6", features = ["fs", "cors", "trace"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+
+# ONVIF (workspace crates)
+onvif-rs = { package = "onvif", path = "../onvif/onvif" }
+schema = { path = "../onvif/schema", features = ["devicemgmt", "media", "event"] }
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Error handling
+anyhow = "1"
+thiserror = "2"
+
+# Utilities
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+url = { version = "2", features = ["serde"] }
+clap = { version = "4", features = ["derive"] }
+
+[[bin]]
+name = "peekaboovault"
+path = "src/bin/peeka_boo_vault.rs"
+
+[dev-dependencies]
+tokio-test = "0.4"

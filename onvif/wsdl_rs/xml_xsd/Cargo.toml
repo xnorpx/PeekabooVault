@@ -1,0 +1,10 @@
+[package]
+name = "xml_xsd"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+xml-rs.workspace = true
+yaserde.workspace = true
+yaserde_derive.workspace = true

@@ -1,0 +1,23 @@
+[package]
+name = "wsdl-parser"
+version.workspace = true
+authors = [
+    "Chris Bruce <chris@lumeo.com>",
+    "leonid.krutovsky <leonid.krutovsky@quantumsoft.ru>",
+    "DmitrySamoylov <dmitry.samoylov@quantumsoft.ru>",
+    "victor-soloviev <victor.soloviev@quantumsoft.ru>",
+]
+edition.workspace = true
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+Inflector.workspace = true
+roxmltree.workspace = true
+
+[dev-dependencies]
+syn.workspace = true
+text-diff.workspace = true
+xsd-parser.workspace = true
+
+[lints]
+workspace = true

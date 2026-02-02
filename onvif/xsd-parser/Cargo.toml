@@ -1,0 +1,71 @@
+[package]
+name = "xsd-parser"
+version.workspace = true
+authors = [
+    "Chris Bruce <chris@lumeo.com>",
+    "leonid.krutovsky <leonid.krutovsky@quantumsoft.ru>",
+    "DmitrySamoylov <dmitry.samoylov@quantumsoft.ru>",
+    "victor-soloviev <victor.soloviev@quantumsoft.ru>",
+]
+edition.workspace = true
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+Inflector.workspace = true
+roxmltree.workspace = true
+
+[dev-dependencies]
+num-bigint.workspace = true
+syn.workspace = true
+text-diff.workspace = true
+xml-rs.workspace = true
+xsd-macro-utils.workspace = true
+xsd-types.workspace = true
+yaserde.workspace = true
+yaserde_derive.workspace = true
+
+# Can't inherit workspace lints when overriding, so manually specify
+[lints.rust]
+non_local_definitions = "allow"
+redundant_imports = "deny"
+redundant_lifetimes = "deny"
+trivial_numeric_casts = "deny"
+unsafe_op_in_unsafe_fn = "deny"
+unused_import_braces = "deny"
+unused_lifetimes = "deny"
+unused_macro_rules = "deny"
+
+[lints.clippy]
+as_ptr_cast_mut = "deny"
+branches_sharing_code = "deny"
+clear_with_drain = "deny"
+collection_is_never_read = "deny"
+debug_assert_with_mut_call = "deny"
+equatable_if_let = "deny"
+fallible_impl_from = "deny"
+iter_on_empty_collections = "deny"
+iter_on_single_items = "deny"
+iter_with_drain = "deny"
+large_stack_frames = "deny"
+mutex_integer = "deny"
+needless_collect = "deny"
+needless_pass_by_ref_mut = "deny"
+nonstandard_macro_braces = "deny"
+path_buf_push_overwrite = "deny"
+read_zero_byte_vec = "deny"
+redundant_clone = "deny"
+redundant_pub_crate = "deny"
+set_contains_or_insert = "deny"
+significant_drop_in_scrutinee = "deny"
+suboptimal_flops = "deny"
+suspicious_operation_groupings = "deny"
+trailing_empty_array = "deny"
+# Allow these lints for external xsd-parser code
+uninlined_format_args = "allow"
+option_if_let_else = "allow"
+missing_const_for_fn = "allow"
+derive_partial_eq_without_eq = "allow"
+semicolon_if_nothing_returned = "allow"
+double_ended_iterator_last = "allow"
+use_self = "allow"
+or_fun_call = "allow"

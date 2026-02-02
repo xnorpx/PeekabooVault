@@ -1,0 +1,11 @@
+[package]
+name = "xop"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+validate.workspace = true
+xml-rs.workspace = true
+yaserde.workspace = true
+yaserde_derive.workspace = true

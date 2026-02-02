@@ -1,0 +1,12 @@
+[package]
+name = "uplink"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+transport.workspace = true
+validate.workspace = true
+xml-rs.workspace = true
+yaserde.workspace = true
+yaserde_derive.workspace = true

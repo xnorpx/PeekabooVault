@@ -1,0 +1,57 @@
+[package]
+name = "onvif"
+version.workspace = true
+authors = ["Chris Bruce <chris@lumeo.com>"]
+edition.workspace = true
+license.workspace = true
+
+[features]
+tls = ["reqwest/native-tls"]
+
+[dependencies]
+async-recursion.workspace = true
+async-trait.workspace = true
+base64.workspace = true
+chrono.workspace = true
+digest_auth.workspace = true
+futures.workspace = true
+futures-core.workspace = true
+futures-util.workspace = true
+nonzero_ext.workspace = true
+reqwest.workspace = true
+schema = { workspace = true, features = [
+    "analytics",
+    "devicemgmt",
+    "event",
+    "imaging",
+    "media",
+    "media2",
+    "ptz",
+    "recording",
+    "replay",
+    "schedule",
+    "search",
+] }
+sha1.workspace = true
+thiserror.workspace = true
+tokio = { workspace = true, features = ["net", "sync", "time"] }
+tokio-stream.workspace = true
+tracing.workspace = true
+url.workspace = true
+uuid.workspace = true
+xml-rs.workspace = true
+xmltree.workspace = true
+xsd-types.workspace = true
+yaserde.workspace = true
+yaserde_derive.workspace = true
+
+[dev-dependencies]
+b_2.workspace = true
+dotenv.workspace = true
+futures-util.workspace = true
+structopt.workspace = true
+tokio = { workspace = true, features = ["full"] }
+tracing-subscriber.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,15 @@
+[package]
+name = "thermal"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+onvif.workspace = true
+transport.workspace = true
+validate.workspace = true
+xml-rs.workspace = true
+xsd-macro-utils.workspace = true
+xsd-types.workspace = true
+yaserde.workspace = true
+yaserde_derive.workspace = true
