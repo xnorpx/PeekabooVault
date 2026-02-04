@@ -1,7 +1,7 @@
 //! PeekabooVault NVR - Main Entry Point
 
 use clap::Parser;
-use peeka_boo_vault::{Config, run_server};
+use peeka_boo_vault::{paths, Config, PathInfo, run_server};
 use std::path::PathBuf;
 use tokio_util::sync::CancellationToken;
 use tracing::{Level, info};
@@ -16,8 +16,8 @@ use tracing_subscriber::{EnvFilter, fmt, prelude::*};
 )]
 struct Args {
     /// Path to configuration file
-    #[arg(short, long, default_value = "config.toml")]
-    config: PathBuf,
+    #[arg(short, long)]
+    config: Option<PathBuf>,
 
     /// Port to bind the HTTP server (overrides config)
     #[arg(short, long)]
@@ -26,12 +26,23 @@ struct Args {
     /// Enable verbose logging
     #[arg(short, long)]
     verbose: bool,
+
+    /// Show configuration paths and exit
+    #[arg(long)]
+    show_paths: bool,
 }
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     // Parse command line arguments
     let args = Args::parse();
+
+    // Handle --show-paths early (before logging setup)
+    if args.show_paths {
+        let path_info = PathInfo::current();
+        println!("{}", path_info);
+        return Ok(());
+    }
 
     // Set up logging
     let filter = if args.verbose {
@@ -54,19 +65,35 @@ async fn main() -> anyhow::Result<()> {
         "Starting PeekabooVault NVR"
     );
 
+    // Ensure directories exist
+    if let Err(e) = paths::ensure_directories() {
+        tracing::warn!("Failed to create directories: {}", e);
+    }
+
+    // Determine config path
+    let config_path = args.config.unwrap_or_else(paths::default_config_path);
+    
     // Load configuration
-    let config_path = if args.config.exists() {
-        Some(&args.config)
+    let config_path_ref = if config_path.exists() {
+        info!("Loading config from: {}", config_path.display());
+        Some(&config_path)
     } else {
-        info!("Config file not found, using defaults");
+        info!(
+            "Config file not found at {}, using defaults",
+            config_path.display()
+        );
         None
     };
-    let mut config = Config::load_or_default(config_path);
+    let mut config = Config::load_or_default(config_path_ref);
 
     // Override port if specified
     if let Some(port) = args.port {
         config.server.bind_address.set_port(port);
     }
+
+    // Log path information
+    let path_info = PathInfo::current();
+    info!("Using paths:\n{}", path_info);
 
     info!(?config, "Loaded configuration");
 

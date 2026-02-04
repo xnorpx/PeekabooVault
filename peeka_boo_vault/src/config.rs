@@ -2,6 +2,7 @@
 //!
 //! TOML-based configuration following Frigate's config-as-truth philosophy.
 
+use crate::paths;
 use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 use std::path::PathBuf;
@@ -16,6 +17,8 @@ pub struct Config {
     pub discovery: DiscoveryConfig,
     /// Storage configuration
     pub storage: StorageConfig,
+    /// WebRTC configuration
+    pub webrtc: WebRtcConfig,
 }
 
 /// Server configuration
@@ -63,20 +66,82 @@ impl Default for DiscoveryConfig {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
 pub struct StorageConfig {
-    /// Path to the SQLite database
-    pub db_path: PathBuf,
+    /// Path to the hot SQLite database (recent recordings)
+    pub hot_db_path: PathBuf,
+    /// Path to the cold SQLite database (archived recordings)
+    pub cold_db_path: PathBuf,
     /// Path to hot recording storage
     pub hot_storage_path: PathBuf,
     /// Path to cold recording storage
-    pub cold_storage_path: Option<PathBuf>,
+    pub cold_storage_path: PathBuf,
+    /// Retention configuration
+    pub retention: RetentionConfig,
 }
 
 impl Default for StorageConfig {
     fn default() -> Self {
         Self {
-            db_path: PathBuf::from("./data/peekaboovault.db"),
-            hot_storage_path: PathBuf::from("./data/recordings/hot"),
-            cold_storage_path: None,
+            hot_db_path: paths::hot_db_path(),
+            cold_db_path: paths::cold_db_path(),
+            hot_storage_path: paths::hot_recordings_path(),
+            cold_storage_path: paths::cold_recordings_path(),
+            retention: RetentionConfig::default(),
+        }
+    }
+}
+
+/// Retention policy configuration
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct RetentionConfig {
+    /// Hot storage quota in bytes (default: 50GB)
+    pub hot_quota_bytes: u64,
+    /// Cold storage quota in bytes (default: 500GB)
+    pub cold_quota_bytes: u64,
+    /// Maximum age in hot storage (seconds, 0 = unlimited)
+    pub hot_max_age_secs: u64,
+    /// Maximum age in cold storage (seconds, 0 = unlimited)
+    pub cold_max_age_secs: u64,
+    /// Hot-to-cold migration interval in seconds
+    pub migration_interval_secs: u64,
+    /// Minimum hot storage usage before migration starts (0.0-1.0)
+    pub migration_threshold: f64,
+}
+
+impl Default for RetentionConfig {
+    fn default() -> Self {
+        Self {
+            hot_quota_bytes: 50 * 1024 * 1024 * 1024,  // 50 GB
+            cold_quota_bytes: 500 * 1024 * 1024 * 1024, // 500 GB
+            hot_max_age_secs: 7 * 24 * 60 * 60,        // 7 days
+            cold_max_age_secs: 0,                       // unlimited
+            migration_interval_secs: 300,               // 5 minutes
+            migration_threshold: 0.8,                   // 80% full
+        }
+    }
+}
+
+/// WebRTC configuration
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct WebRtcConfig {
+    /// Address to bind the UDP socket for WebRTC
+    pub bind_address: SocketAddr,
+    /// Enable WebRTC server
+    pub enabled: bool,
+    /// Max sessions per camera
+    pub max_sessions_per_camera: usize,
+    /// Session timeout in seconds
+    pub session_timeout_secs: u64,
+}
+
+impl Default for WebRtcConfig {
+    fn default() -> Self {
+        Self {
+            bind_address: "0.0.0.0:10000".parse().unwrap(),
+            enabled: true,
+            max_sessions_per_camera: 10,
+            session_timeout_secs: 60,
         }
     }
 }

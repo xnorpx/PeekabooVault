@@ -176,6 +176,29 @@
 		</div>
 	{/if}
 
+	<!-- Quick Actions -->
+	<div class="quick-actions">
+		<button class="btn btn-primary btn-large" onclick={() => { selectedDeviceForAdd = null; showAddModal = true; }}>
+			<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<line x1="12" y1="5" x2="12" y2="19"/>
+				<line x1="5" y1="12" x2="19" y2="12"/>
+			</svg>
+			Add Camera
+		</button>
+		<button class="btn btn-secondary btn-large" onclick={startScan} disabled={scanning}>
+			{#if scanning}
+				<span class="spinner"></span>
+				Scanning...
+			{:else}
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<circle cx="11" cy="11" r="8"/>
+					<path d="m21 21-4.35-4.35"/>
+				</svg>
+				Scan Network
+			{/if}
+		</button>
+	</div>
+
 	<!-- Discovery Section -->
 	<section class="section">
 		<div class="section-header">
@@ -183,7 +206,7 @@
 				<h2>Discover Cameras</h2>
 				<p class="section-subtitle">Find ONVIF cameras on your network</p>
 			</div>
-			<button class="btn btn-primary" onclick={startScan} disabled={scanning}>
+			<button class="btn btn-secondary" onclick={startScan} disabled={scanning}>
 				{#if scanning}
 					<span class="spinner"></span>
 					Scanning...
@@ -367,6 +390,20 @@
 	.empty-state .text-muted {
 		font-size: 0.875rem;
 		margin-top: 0.25rem;
+	}
+
+	.quick-actions {
+		display: flex;
+		gap: 1rem;
+		padding: 1.5rem;
+		background: var(--color-bg-secondary);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+	}
+
+	.btn-large {
+		padding: 0.875rem 1.5rem;
+		font-size: 1rem;
 	}
 
 	.alert {

@@ -39,6 +39,24 @@ uuid = { version = "1", features = ["v4", "serde"] }
 chrono = { version = "0.4", features = ["serde"] }
 url = { version = "2", features = ["serde"] }
 clap = { version = "4", features = ["derive"] }
+dirs = "5"
+
+# Phase 2: RTSP streaming + Recording
+retina = "0.4"
+rusqlite = { version = "0.32", features = ["bundled"] }
+tokio-rusqlite = "0.6"
+bytes = "1"
+parking_lot = "0.12"
+futures.workspace = true
+
+# H.264 parsing
+h264-reader = "0.8"
+
+# Phase 6: WebRTC live view
+str0m = "0.16"
+str0m-rust-crypto = "0.1"
+rand = "0.8"
+halfbrown = "0.2"
 
 [[bin]]
 name = "peekaboovault"
@@ -46,3 +64,4 @@ path = "src/bin/peeka_boo_vault.rs"
 
 [dev-dependencies]
 tokio-test = "0.4"
+tempfile = "3"

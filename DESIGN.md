@@ -573,43 +573,66 @@ Acceptance criteria:
 - A configured camera records continuously and produces indexed segments without manual intervention.
 - Stream Manager maintains persistent connection and can serve multiple consumers.
 
-### Phase 3 — Playback (on-demand MP4 assembly)
+### Phase 3 — Playback (Frame-based WebRTC Playback)
 Deliverables:
-- Query recordings by time range.
-- Construct `.mp4` on-demand (Moonfire-style) for arbitrary ranges without re-encode.
-- Basic web playback UI (timeline selection → playback).
+- **Frame storage with keyframe markers:** Each recorded frame stored with timestamp, keyframe flag, and sequence number.
+- **Time-based frame queries:** Query frames by time range from SQLite with efficient keyframe seeking.
+- **Keyframe seeking logic:** When client requests playback at time T, find nearest keyframe (before T for forward play, closest for seeking).
+- **Frame serving API:** HTTP/WebSocket endpoint to stream frames for a time range, starting from keyframe.
+- Basic timeline UI for selecting playback position.
+
+Design notes:
+- No MP4 assembly needed - frames sent directly via WebRTC (prepared here, actual WebRTC in Phase 6).
+- Unified pipeline: same frame data serves both recording storage and playback.
+- Seeking always snaps to nearest keyframe for clean decoder state.
 
 Acceptance criteria:
-- User can pick a time range in the UI and play/export a continuous MP4.
+- User can query frames by time range and receive keyframe-aligned frame data.
+- Seeking forward/backward finds the appropriate keyframe boundary.
 
-### Phase 4 — SQLite Indexing (Hot/Cold) + Retention
+### Phase 4 — SQLite Indexing (Hot/Cold) + Retention [COMPLETE]
 Deliverables:
-- Hot DB queries for timeline browsing.
-- Retention policy primarily by **storage quota** (with optional max age) and migration job to cold DB.
-- Startup recovery (detect partial segments / incomplete moves).
+- [x] Hot/Cold dual database architecture (HotColdDb)
+- [x] Hot DB queries for timeline browsing
+- [x] Retention policy configuration (quota-based + age limits)
+- [x] Migration job to move recordings from hot → cold storage
+- [x] Startup recovery for partial segments and interrupted migrations
+- [x] Storage/retention HTTP API endpoints
+- [x] Timeline query API with hot/cold awareness
 
 Acceptance criteria:
-- Old recordings automatically move to cold storage + cold DB without gaps.
+- [x] Old recordings automatically move to cold storage + cold DB without gaps
+- [x] All 26 tests passing
 
-### Phase 5 — Health Monitoring + Timeline UX
+### Phase 5 — Health Monitoring + Timeline UX [COMPLETE]
 Deliverables:
-- Health polling loop (every 30s) + state machine (online/offline).
-- UI shows camera health and recent events (timeline view), using the `timeline` table.
-- Event normalization using Scrypted-style topic stripping for vendor compatibility.
+- [x] Health monitor with state machine (online/offline/degraded/unknown)
+- [x] Health polling loop (configurable interval, default 30s)
+- [x] State transitions with thresholds (consecutive failures → offline)
+- [x] Event normalization using Scrypted-style topic stripping
+- [x] Health/Events HTTP API endpoints
+- [x] Timeline UI page with recordings and events visualization
 
 Acceptance criteria:
-- Motion events show up; cameras marked offline within bounded time.
+- [x] Motion events show up; cameras marked offline within bounded time
+- [x] All 30 tests passing
 
-### Phase 6 — WebRTC Live View (str0m)
+### Phase 6 — WebRTC Live View (str0m) [COMPLETE]
 Deliverables:
-- Signaling channel.
-- Forwarding pipeline (H.264 first) consuming from Stream Manager.
-- Instant playback via prebuffer (no waiting for keyframe).
-- Viewer UI for live playback.
+- [x] str0m dependency with pure Rust crypto (str0m-rust-crypto)
+- [x] WebRTC signaling types (api.rs)
+- [x] WebRTC session manager (webrtc.rs)
+- [x] HTTP signaling endpoints (POST /offer, POST /ice-candidate, etc.)
+- [x] Forwarding pipeline connecting Stream Manager to WebRTC
+- [x] UDP transport for RTP media with shared socket
+- [x] Source address cache with halfbrown for fast ufrag lookup
+- [x] Viewer UI for live playback with auto-reconnection
+- [x] Stream selector (main/sub) and codec negotiation
+- [x] Stats display (codec, resolution, fps, bitrate)
 
 Acceptance criteria:
-- Browser can view live video with low latency; reconnect works.
-- New viewer connections start playing instantly (within ~100ms).
+- [x] Browser can view live video with low latency; reconnect works
+- [x] New viewer connections start playing instantly (within ~100ms)
 
 ### Phase 7 — Detection Integration (Optional, blue-onyx)
 Deliverables:
